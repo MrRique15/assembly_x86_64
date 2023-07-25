@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = Atividade1/helloworld
+PROG = initial_ex/helloworld
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

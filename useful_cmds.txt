@@ -1,0 +1,30 @@
+-------- utilizando o gcc para assembly --------
+as exemplo.s -o exemplo.o                                                 - para compilar o código em assembly
+ld exemplo.o -o exemplo                                                   - para gerar o executável
+./exemplo                                                                 - para executar o programa
+ld exemplo.o -lc -dynamic-linker /lib/ld-linux.so.2 -o exemplo            - para gerar o executável utilizando a biblioteca padrão do C
+ld exemplo.o -lc -lm -dynamic-linker /lib/ld-linux.so.2 -o exemplo        - para gerar o executável utilizando a biblioteca padrão do C e a biblioteca matemática
+
+
+-------- utilizando debbuger --------
+as -gstabs exemplo.s -o exemplo.o                                         - para compilar o código em assembly com informações de debug
+gdb exemplo.o                                                             - para debugar o código em assembly
+
+
+-------- trabalhando em SO 64 bits --------
+as exemplo.o -o exemplo.o -32                                            - para compilar o código em assembly para 32 bits
+ld exemplo.o -o exemplo -m elf_i386                                      - para gerar o executável para 32 bits
+
+
+-------- instalando lib para usar bibliotecas padrão do C --------
+sudo apt install gcc-multilib                                            - para instalar a lib para usar bibliotecas padrão do C
+
+
+-------- compilando direto pelo GCC --------
+
+
+
+-------- COMPILANDO ATIVIDADE 01 --------
+as helloworld.s -o helloworld.o -32
+ld helloworld.o -lc -dynamic-linker /lib/ld-linux.so.2 -o helloworld -m elf_i386
+./helloworld

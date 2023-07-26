@@ -1,2 +1,2 @@
 # assembly_x86_64
-Assembly codes created for studying porpouse.
+Assembly codes created for studying porpose.

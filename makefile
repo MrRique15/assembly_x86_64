@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = numeric_ops/rectangle_area
+PROG = numeric_ops/triangle_area
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

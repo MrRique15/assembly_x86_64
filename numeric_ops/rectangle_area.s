@@ -4,16 +4,15 @@
     outputstr: .string "Rectangle Area: %d * %d = %d\n"
     value1: .long 0
     value2: .long 0
-    area: .long 0
 
 .section .text
-.globl _start
+.global _start
 _start:
     pushl $value1      # empilha endereço para guardar valor1
     pushl $value2      # empilha endereço para guardar valor2
     pushl $inputstr    # empilha string de input
     call scanf         # chamada para scanf
-    addl $12, %esp     # limpa ESP com 3 BYTES (12 bits), 8 - values, 4 - string
+    addl $12, %esp     # limpa ESP com 96 bits (12 Bytes), 8 - values, 4 - string
 
     movl value1, %eax  # guarda valor1 em eax
     movl value2, %ebx  # guarda valor2 em ebx

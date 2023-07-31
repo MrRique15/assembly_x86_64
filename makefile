@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = numeric_ops/triangle_area
+PROG = initial_ex/syscall_print
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

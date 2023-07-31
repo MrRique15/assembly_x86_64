@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = initial_ex/syscall_print
+PROG = praticas/pratica_02
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = praticas/pratica_02
+PROG = jump_ops/conditional_jmp
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

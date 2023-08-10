@@ -7,11 +7,7 @@
     result_string: .string "Sorted Numbers: %d, %d, %d\n"
     info_string: .string "Insert 3 numbers to sort: (1) (2) (3)\n"
     collected_string: .string "Numbers collected: %d, %d, %d\n"
-
-    debug_str1: .string "Primeiro-Segudo\n"
-    debug_str2: .string "Primeiro-Terceiro\n"
-    debug_str3: .string "Segundo-Terceiro\n"
-
+    
 .section .text
 
 .global _start

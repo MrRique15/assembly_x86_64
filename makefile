@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = jump_ops/conditional_jmp
+PROG = jump_ops/sort_numbers
 
 all: $(PROG).s
 	as -32 $(PROG).s -o $(PROG).o 

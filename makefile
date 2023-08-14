@@ -2,8 +2,8 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = jump_ops/sort_numbers
-OUTPUT_NAME = sort_numbers
+PROG_PATH = loop_ops/sum_ten
+OUTPUT_NAME = sum_tem
 
 all:
 	as -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o 

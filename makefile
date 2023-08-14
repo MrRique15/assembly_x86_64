@@ -1,19 +1,20 @@
-# gcc -> 		gcc $(PROG).s -o $(PROG).o -m32
+# gcc -> 		gcc $(PROG_PATH).s -o $(PROG).o -m32
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG = jump_ops/sort_numbers
+PROG_PATH = jump_ops/sort_numbers
+OUTPUT_NAME = sort_numbers
 
-all: $(PROG).s
-	as -32 $(PROG).s -o $(PROG).o 
-	ld -m elf_i386 $(PROG).o -lc -dynamic-linker /lib/ld-linux.so.2 -o $(PROG)
+all:
+	as -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o 
+	ld -m elf_i386 builds/$(OUTPUT_NAME).o -lc -dynamic-linker /lib/ld-linux.so.2 -o builds/$(OUTPUT_NAME)
 
 run:
-	./$(PROG)
+	./builds/$(OUTPUT_NAME)
 
 gdb: 
-	as -gstabs -32 $(PROG).s -o $(PROG).o
-	ld -m elf_i386 $(PROG).o -lc -dynamic-linker /lib/ld-linux.so.2 -o $(PROG)
+	as -gstabs -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o
+	ld -m elf_i386 builds/$(OUTPUT_NAME).o -lc -dynamic-linker /lib/ld-linux.so.2 -o builds/$(OUTPUT_NAME)
 
 rgdb:
-	gdb $(PROG)
+	gdb builds/$(OUTPUT_NAME)

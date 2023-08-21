@@ -1,13 +1,13 @@
 .section .data
-    menor: .int 999999999
-    maior: .int 0
+    smallest_num: .int 999999999
+    biggest_num: .int 0
     zero_number: .int 0
     numbers_amount: .int 8
     inserted_numbers: .int 0
     v1: .int 0, 0, 0, 0, 0, 0, 0, 0
     
-    result_string: .string "Maior Numero: %d, Menor Numero: %d\n"
-    number_insert: .string "Insira um número inteiro: \n"
+    result_string: .string "Biggest Number: %d, Smallest Number: %d\n"
+    number_insert: .string "Insert an inteter number: \n"
     scan_string: .string "%d"
 
 .text
@@ -27,13 +27,13 @@ insertion_loop:
     addl $8, %esp
 
     movl (%edi), %ebx
-    cmpl maior, %ebx
-    jg trocar_maior
+    cmpl biggest_num, %ebx
+    jg change_biggest
 
     continue_exec_1: 
         movl (%edi), %ebx
-        cmpl menor, %ebx
-        jl trocar_menor
+        cmpl smallest_num, %ebx
+        jl change_smallest
 
     continue_exec_2: 
         addl $4, %edi
@@ -44,19 +44,19 @@ insertion_loop:
 
         jmp print_results
         
-trocar_maior:
+change_biggest:
     movl (%edi), %eax
-    movl %eax, maior
+    movl %eax, biggest_num
     jmp continue_exec_1
 
-trocar_menor:
+change_smallest:
     movl (%edi), %eax
-    movl %eax, menor
+    movl %eax, smallest_num
     jmp continue_exec_2
 
 print_results:
-    pushl menor
-    pushl maior
+    pushl smallest_num
+    pushl biggest_num
     pushl $result_string
     call printf
     addl $12, %esp

@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = array_ops/vector_fill_bigger_smallest
+PROG_PATH = array_ops/vector_fill_sum
 OUTPUT_NAME = array_fill_sum
 
 all:

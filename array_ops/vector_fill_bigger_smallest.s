@@ -7,7 +7,7 @@
     v1: .int 0, 0, 0, 0, 0, 0, 0, 0
     
     result_string: .string "Biggest Number: %d, Smallest Number: %d\n"
-    number_insert: .string "Insert an inteter number: \n"
+    number_insert: .string "Insert an integer number: \n"
     scan_string: .string "%d"
 
 .text
@@ -15,6 +15,8 @@
 
 _start:
     movl $v1, %edi
+
+    jmp insertion_loop
 
 insertion_loop:
     pushl $number_insert

@@ -9,7 +9,7 @@
     max_insertions: .int 20
     inserted_numbers: .int 0
     smallest_num: .int 999999999
-    v1: .int 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    v1: .space 84
     # ------------------------------------------------------------------------
     # text data
     scan_string: .string "%d"

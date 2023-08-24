@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = array_ops/vector_fill_sum
+PROG_PATH = array_ops/vector_triangular_numbers
 OUTPUT_NAME = array_fill_sum
 
 all:

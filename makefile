@@ -2,8 +2,8 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = array_ops/vector_triangular_numbers
-OUTPUT_NAME = array_fill_sum
+PROG_PATH = array_ops/vector_fill_selection_sort
+OUTPUT_NAME = vector_fill_selection_sort
 
 all:
 	as -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o 

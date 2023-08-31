@@ -74,8 +74,8 @@ collectArray:
     	call scanf
         addl $8, %esp
 
-    	pushl 	$break_line
-    	call 	printf
+    	pushl $break_line
+    	call printf
         addl $4, %esp
 
     	popl %ecx
@@ -87,8 +87,8 @@ collectArray:
     ret
 
 showArray:
-	movl 	tam, %ecx
-	movl 	array, %edi
+	movl tam, %ecx
+	movl array, %edi
 
     _showElementLoop:
     	movl (%edi), %ebx

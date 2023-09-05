@@ -88,10 +88,10 @@ start_program:
     _collect_numbers:
 	    incl %ebx
 
-	    pushl %edi # operated array (pushed to backup the address)
-	    pushl %ecx # array size (pushed to backup the size)
+	    pushl %edi
+	    pushl %ecx             # array size (pushed to backup the size)
 
-	    pushl %ebx # current index (pushed to be used in printf)
+	    pushl %ebx
 	    pushl $collectNumberStr
 	    call printf
         addl $4, %esp
@@ -105,14 +105,14 @@ start_program:
 	    call printf
 	    addl $4, %esp
 
-	    popl %ebx # current index (popped to be used in next iteration)
-	    popl %ecx # array size (popped to be used in loop condition)
+	    popl %ebx
+	    popl %ecx              # array size (popped to be used in loop condition)
 
-	    popl %edi # operated array (popped to be used in value attribution)
+	    popl %edi
 	    movl intNumber, %eax
 	    movl %eax, (%edi)
 	    addl $4, %edi
-	loop _collect_numbers # loop until ecx == 0
+	loop _collect_numbers      # loop until ecx == 0
 	ret
 
 # ###########################################################

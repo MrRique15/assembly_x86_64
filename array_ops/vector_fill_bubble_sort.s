@@ -3,7 +3,7 @@
 	skipLine: .asciz "\n"
     intFormat: .asciz "%d"
     showIntNumber: .asciz " %d"
-    showSortedArr: .asciz "\nSorted Array:"
+    showSortedArr: .asciz "\nSorted Array:  "
     showOriginalArr: .asciz "Inserted Array:"
     collectNumberStr: .asciz "Insert the %d° element > "
     progTitle: .asciz "\n------------------------------\nSorting Array withBubble Sort\n------------------------------\n"
@@ -52,7 +52,7 @@ show_sorted_array:
 	call printf
 	addl $4, %esp
 
-    jmp finish_program
+    ret
 
 show_collected_array:
 	pushl $showOriginalArr
@@ -77,7 +77,7 @@ show_collected_array:
 	    popl %ecx
 	    popl %edi
 	loop _show_number_initial
-    jmp bubble_sort_array
+    ret
 
 start_program:
     movl arrSize, %ecx
@@ -113,8 +113,7 @@ start_program:
 	    movl %eax, (%edi)
 	    addl $4, %edi
 	loop _collect_numbers # loop until ecx == 0
-
-	jmp show_collected_array
+	ret
 
 # ###########################
 # ## bubble sort algorithm ##
@@ -127,25 +126,24 @@ bubble_sort_array:
 
 	movl $1, lastSwap          # lastSwap maintains the index of the last swap made
 	movl $1, currentIndex      # currentIndex maintains the index of the current element
-
-	subl $1, %ecx
-	# pushl %ecx                 # push the missing amount of elements to be sorted
+	movl arrSize, %ecx         # %ecx receives the array size
+	subl $1, %ecx              # %ecx will loop into arraySize-1, because it uses two index
 
     _inner_loop:
+		pushl %ecx             # store %ecx value to backup in loop
 
 	    movl (%edi), %eax      # %eax contains the value of the current element
 	    movl (%esi), %ebx      # %ebx contains the value of the next element
 	    cmpl %eax, %ebx
 	    jl swap_values         # if %ebx < %eax, swap the values
 
-        next_position:
-	        addl $4, %edi      # go next element with current index
-	        addl $4, %esi      # go next element with next index
-	        incl currentIndex  # increment the current index
+        continue_execution:
+	    addl $4, %edi          # go next element with current index
+	    addl $4, %esi          # go next element with next index
+	    incl currentIndex      # increment the current index
 
-			movl currentIndex, %eax
-			cmpl %eax, arrSize
-			jne _inner_loop    # continue inner_loop while currentIndex < arrSize
+		popl %ecx              # get resting amount of numbers to be checked into array
+	loop _inner_loop           # continue inner_loop until it reachs the end of the array
 
 	movl lastSwap, %eax
 	movl %eax, auxSize         # auxSize receives the index of the last swap made
@@ -157,12 +155,12 @@ bubble_sort_array:
 swap_values:
 	movl currentIndex, %edx
 	movl %edx, lastSwap
-	movl %eax, (%esi) # put the greater value in the right neighbor
-	movl %ebx, (%edi) # put the smaller value in the current position
-	jmp next_position
+	movl %eax, (%esi)          # put the greater value in the right neighbor
+	movl %ebx, (%edi)          # put the smaller value in the current position
+	jmp continue_execution
 
 finish_bubble_sort:
-    jmp show_sorted_array
+    ret
 
 # ###########################
 # ## main program function ##
@@ -172,7 +170,10 @@ _start:
 	call printf
     addl $4, %esp
 
-    jmp start_program
+    call start_program
+	call show_collected_array
+	call bubble_sort_array
+	call show_sorted_array
 
 finish_program:
     pushl $0

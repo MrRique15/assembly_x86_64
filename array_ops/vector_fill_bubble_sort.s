@@ -52,7 +52,7 @@ show_sorted_array:
 	call printf
 	addl $4, %esp
 
-    ret
+    jmp finish_program
 
 show_collected_array:
 	pushl $showOriginalArr
@@ -77,9 +77,9 @@ show_collected_array:
 	    popl %ecx
 	    popl %edi
 	loop _show_number_initial
-    ret
+    jmp bubble_sort_array
 
-init_variables:
+start_program:
     movl arrSize, %ecx
     movl %ecx, auxSize
     movl $operatedArray,%edi
@@ -113,7 +113,8 @@ init_variables:
 	    movl %eax, (%edi)
 	    addl $4, %edi
 	loop _collect_numbers # loop until ecx == 0
-    ret
+
+	jmp show_collected_array
 
 # ###########################
 # ## bubble sort algorithm ##
@@ -128,9 +129,10 @@ bubble_sort_array:
 	movl $1, currentIndex      # currentIndex maintains the index of the current element
 
 	subl $1, %ecx
-	pushl %ecx                 # backup the missing amount of elements to be sorted 
+	# pushl %ecx                 # push the missing amount of elements to be sorted
 
     _inner_loop:
+
 	    movl (%edi), %eax      # %eax contains the value of the current element
 	    movl (%esi), %ebx      # %ebx contains the value of the next element
 	    cmpl %eax, %ebx
@@ -140,9 +142,11 @@ bubble_sort_array:
 	        addl $4, %edi      # go next element with current index
 	        addl $4, %esi      # go next element with next index
 	        incl currentIndex  # increment the current index
-    
-	loop _inner_loop
-	
+
+			movl currentIndex, %eax
+			cmpl %eax, arrSize
+			jne _inner_loop    # continue inner_loop while currentIndex < arrSize
+
 	movl lastSwap, %eax
 	movl %eax, auxSize         # auxSize receives the index of the last swap made
 	movl %eax, %ecx
@@ -158,7 +162,7 @@ swap_values:
 	jmp next_position
 
 finish_bubble_sort:
-    ret
+    jmp show_sorted_array
 
 # ###########################
 # ## main program function ##
@@ -168,10 +172,8 @@ _start:
 	call printf
     addl $4, %esp
 
-    call init_variables
-    call show_collected_array
-    call bubble_sort_array
-    call show_sorted_array
+    jmp start_program
 
+finish_program:
     pushl $0
 	call exit

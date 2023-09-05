@@ -21,9 +21,9 @@
 .section .text
 .global _start
 
-# ###########################
-# ## auxiliary procedures ##
-# ###########################
+# ###########################################################
+# auxiliary procedures
+# ###########################################################
 show_sorted_array:
 	pushl $showSortedArr
 	call printf
@@ -115,9 +115,9 @@ start_program:
 	loop _collect_numbers # loop until ecx == 0
 	ret
 
-# ###########################
-# ## bubble sort algorithm ##
-# ###########################
+# ###########################################################
+# bubble sort algorithm 
+# ###########################################################
 bubble_sort_array:
 	movl $operatedArray, %edi  # %edi receives the address of the first array element
 	movl %edi, %esi            # %esi receives the address of the first array element
@@ -162,9 +162,9 @@ swap_values:
 finish_bubble_sort:
     ret
 
-# ###########################
-# ## main program function ##
-# ###########################
+# ###########################################################
+# main program
+# ###########################################################
 _start:
 	pushl $progTitle
 	call printf

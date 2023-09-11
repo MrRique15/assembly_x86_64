@@ -1,6 +1,6 @@
 .section .data
-	usedArray: .int 5,8,6,3,4,2,1,9
-	arrSize: .int 8
+	usedArray: .int 2,5,9,7,4,3,6,5,1,8,9,12,14,16,18,10
+	arrSize: .int 16
 	middleValue: .int 0
 	rightValue: .int 0
 	leftValue: .int 0
@@ -13,15 +13,11 @@
 	auxArr1: .space 4
 	auxArr2: .space 4
 
-	auxArrGlobal: .space 8
-	auxValue1: .int 0
-	auxValue2: .int 0
-	auxValue3: .int 0
-
 	showSortedArr: .asciz "Sorted Array:   "
 	showOriginalArr: .asciz "Original Array: "
 	intFormat: .asciz "%d "
 	newLine: .asciz "\n"
+	debugStr: .asciz "Ocurred operation\n"
 
 .section .text
 .global _start
@@ -57,12 +53,17 @@ show_collected_array:
     ret
 
 show_sorted_array:
+	pushl %ebp
+	movl %esp, %ebp
+
+	movl 8(%ebp), %edi # usedArray
+
 	pushl $showSortedArr
 	call printf
 	addl $4, %esp
 
 	movl arrSize, %ecx
-	movl $usedArray, %edi
+	# movl $usedArray, %edi
 
     _show_number_sorted:
 	    movl (%edi), %ebx
@@ -84,6 +85,7 @@ show_sorted_array:
 	call printf
 	addl $4, %esp
 
+	popl %ebp
     ret
 
 merge:
@@ -100,47 +102,41 @@ merge:
 	movl $0, n1
 	movl $0, n2
 
-	pushl %ebx
-	pushl %ecx
-	pushl %edx
 	pushl %edi
 
 	# n1 = middleValue - leftValue + 1
 	movl %ecx, %eax
 	subl %edx, %eax
 	addl $1, %eax
-	movl %eax, %ecx
+	movl %eax, n1
 
-	movl %ecx, n1
-
-	movl $auxArr1, %esi
+	movl $auxArr1, %ebp
 
 	movl %edx, %eax
 	imul $4, %eax
 	addl %eax, %edi
 
-	incl %ecx
-	cmpl $0, %ecx
-	je ignore_copy_arr1
+	movl n1, %eax
+	cmpl $0, %eax
+	jle ignore_copy_arr1
+	movl $0, i
 	_copy_arr1_loop:
 		movl (%edi), %eax
-		movl %eax, (%esi)
-		addl $4, %esi
+		movl %eax, (%ebp)
+		incl i
+		movl i, %eax
+		cmpl n1, %eax
+		jge ignore_copy_arr1
+		addl $4, %ebp
 		addl $4, %edi
+		jmp _copy_arr1_loop
 	loop _copy_arr1_loop
-
 	ignore_copy_arr1:
-	popl %edi
-	popl %edx
-	popl %ecx
-	popl %ebx
 
-	pushl %ebx
-	pushl %ecx
-	pushl %edx
+	popl %edi
 	pushl %edi
 
-	movl $auxArr2, %esi
+	movl $auxArr2, %ebp
 	addl %ecx, %eax
 	imul $4, %eax
 	addl %eax, %edi
@@ -148,25 +144,24 @@ merge:
 	# n2 = rightValue - middleValue
 	movl %ebx, %eax
 	subl %ecx, %eax
-	movl %eax, %ecx
+	movl %eax, n2
 
-	movl %ecx, n2
-
-	incl %ecx
-	cmpl $0, %ecx
-	je ignore_copy_arr2
+	movl n2, %eax
+	cmpl $0, %eax
+	jle ignore_copy_arr2
 	_copy_arr2_loop:
 		movl (%edi), %eax
-		movl %eax, (%esi)
-		addl $4, %esi
+		movl %eax, (%ebp)
+		incl j
+		movl j, %eax
+		cmpl n2, %eax
+		jge ignore_copy_arr2
+		addl $4, %ebp
 		addl $4, %edi
+		jmp _copy_arr2_loop
 	loop _copy_arr2_loop
-
 	ignore_copy_arr2:
 	popl %edi
-	popl %edx
-	popl %ecx
-	popl %ebx
 
 	movl $auxArr1, %esi
 	movl $auxArr2, %ebp
@@ -174,6 +169,9 @@ merge:
 	movl %edx, %eax
 	imul $4, %eax
 	addl %eax, %edi
+
+	movl $0, i
+	movl $0, j
 	_first_while_loop:
 		_first_while_condition:
 			movl n1, %eax
@@ -183,7 +181,6 @@ merge:
 				movl n2, %eax
 				cmpl %eax, j
 				jge _second_while_loop
-				
 		movl (%esi), %eax
 		movl (%ebp), %ebx
 		cmpl %eax, %ebx
@@ -193,19 +190,13 @@ merge:
 			addl $4, %edi
 			addl $4, %esi
 			incl i
+			jmp _first_while_loop
 		_first_else:
 			movl %ebx, (%edi)
 			addl $4, %edi
 			addl $4, %ebp
 			incl j
-		# _first_while_condition:
-		# 	movl n1, %eax
-		# 	cmpl %eax, i
-		# 	jge _second_while_loop
-		# 	_verify_second:
-		# 		movl n2, %eax
-		# 		cmpl %eax, j
-		# 		jge _second_while_loop
+			jmp _first_while_loop
 
 	_second_while_loop:
 		movl n1, %eax
@@ -231,92 +222,6 @@ merge:
 
 	_end_merge:
 		popl %ebp
-		popl %ebx
-		popl %eax
-		popl %edx
-		popl %edi
-		ret
-
-merge_sort_two:
-	pushl %ebp
-	movl %esp, %ebp
-
-	movl 8(%ebp), %ebx # rightValue
-	movl 12(%ebp), %edx # leftValue
-	movl 16(%ebp), %edi # usedArray
-
-	cmpl %ebx, %edx
-	jge _end_merge_sort_two
-
-	movl %ebx, %ecx
-	subl $1, %ecx
-	addl %edx, %ecx
-	movl %ecx, %eax
-	sarl $1, %eax 
-
-	pushl %edi
-	pushl %edx
-	pushl %eax
-	call merge_sort_one
-
-	addl $1, %eax
-	pushl %edi
-	pushl %eax
-	pushl %ebx
-	call merge_sort_two
-
-	pushl %edi
-	pushl %edx
-	pushl %eax
-	pushl %ebx
-	call merge
-
-	_end_merge_sort_two:
-		popl %ebp
-		popl %ebx
-		popl %eax
-		popl %edi
-		ret
-
-merge_sort_one:
-	pushl %ebp
-	movl %esp, %ebp
-
-	movl 8(%ebp), %ebx # rightValue
-	movl 12(%ebp), %edx # leftValue
-	movl 16(%ebp), %edi # usedArray
-
-	cmpl %ebx, %edx
-	jge _end_merge_sort_one
-
-	movl %ebx, %ecx
-	subl $1, %ecx
-	addl %edx, %ecx
-	movl %ecx, %eax
-	sarl $1, %eax 
-
-	pushl %edi
-	pushl %edx
-	pushl %eax
-	call merge_sort_one
-
-	addl $1, %eax
-	pushl %edi
-	pushl %eax
-	pushl %ebx
-	call merge_sort_two
-
-	pushl %edi
-	pushl %edx
-	pushl %eax
-	pushl %ebx
-	call merge
-
-	_end_merge_sort_one:
-		popl %ebp
-		popl %eax
-		popl %edx
-		popl %edi
 		ret
 
 merge_sort:
@@ -339,26 +244,32 @@ merge_sort:
 	pushl %edi
 	pushl %edx
 	pushl %eax
-	call merge_sort_one
+	call merge_sort
+	popl %eax
+	popl %edx
+	popl %edi
 
 	addl $1, %eax
 	pushl %edi
 	pushl %eax
 	pushl %ebx
-	call merge_sort_two
+	call merge_sort
+	popl %ebx
+	popl %eax
+	popl %edi
 
 	pushl %edi
 	pushl %edx
 	pushl %eax
 	pushl %ebx
 	call merge
+	popl %ebx
+	popl %eax
+	popl %edx
+	popl %edi
 
 	_end_merge_sort:
 		popl %ebp
-
-		popl %ebx
-		popl %eax
-		popl %edx
 		ret
 
 exit_program:
@@ -370,14 +281,18 @@ _start:
 
 	# prepare initial rightValue
 	movl arrSize, %eax
-	subl $1, %eax
+	decl %eax
     
-	movl $usedArray, %edi
-	pushl %edi  # push array
-	pushl $0   # push leftValue
-	pushl %eax  # push rightValue
+	pushl $usedArray  # push array
+	pushl $0          # push leftValue
+	pushl %eax        # push rightValue
 	call merge_sort
+	addl $8, %esp
+	popl %edi
 
+	
+	pushl %edi
 	call show_sorted_array
+	popl %edi
 
 	jmp exit_program

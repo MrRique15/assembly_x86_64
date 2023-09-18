@@ -8,13 +8,12 @@
     comma: .string ", "
     scanVec: .string "%d"
     conti: .int 0
-    # testTxt: .string "%d - %d"
+    testTxt: .string "%d - %d"
     contj: .int 0
-    v1: .int 59, 57, 50, 56, 55, 53, 58, 51, 52, 54
-    v1Aux: .int 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-    vecTam: .int 10
+    v1: .int 0, 8, 3, 6, 2, 4, 7, 5, 1, 9
+    v1Aux: .int 0, 0, 0, 0, 0, 0, 0, 0
+    vecTam: .int 8
     meio: .long 0
-    testTxt: .string "%d < %d && %d >= %d || %d < %d\n"
 
 .section .text
 .global _start
@@ -49,7 +48,7 @@ _start:
     pushl $v1
     call printVec
     addl $8, %esp
-
+    
     pushl $0
     call exit
 
@@ -231,41 +230,24 @@ exitmergeLoop:
 # meio       12
 # esq        8
 .isLeftVec:
-    # (esq < meio) && ((dir >= fim) || (vetor[esq] < vetor[dir])
+    # ((esq < meio) && ((dir >= fim) || (vetor[esq] < vetor[dir])))
+
     pushl %ebp
     movl %esp, %ebp
-
-    # pushl %eax
-    # pushl %ecx
-    # pushl %edx
-    
-    # pushl 28(%ebp)
-    # pushl 24(%ebp)
-    # pushl 20(%ebp)
-    # pushl 16(%ebp)
-    # pushl 12(%ebp)
-    # pushl 8(%ebp)
-    # pushl $testTxt
-    # call printf
-    # addl $28, %esp
-
-    # popl %edx
-    # popl %ecx
-    # popl %eax
-
     movl 24(%ebp), %eax
     cmpl 28(%ebp), %eax
-    jl exitIsLeftVecTrue
+    jl vet_esq_smaller_than_vet_dir
 
     movl 16(%ebp), %eax
     cmpl 20(%ebp), %eax
     jl exitIsLeftVecFalse
-    
+
+    vet_esq_smaller_than_vet_dir:
     movl 8(%ebp), %eax
     cmpl 12(%ebp), %eax
-    jl exitIsLeftVecTrue
+    jge exitIsLeftVecFalse
 
-    jmp exitIsLeftVecFalse
+    jmp exitIsLeftVecTrue
 
 exitIsLeftVecTrue:
     movl $1, %eax

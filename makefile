@@ -2,7 +2,7 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = array_ops/merge
+PROG_PATH = array_ops/mergesort
 OUTPUT_NAME = merge_sort
 
 all:

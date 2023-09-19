@@ -280,10 +280,6 @@ _arrayCopy:
     jmp _arrayCopyLoop
 
 _f1Flag:
-    pushl $debugStr
-    call printf
-    addl $4, %esp
-
     call bubble_sort_array
 
     pushl $debugStr

@@ -1,3 +1,4 @@
+# pratica 02 - change string chars to CPUID output
 .section .data
     output: 
         .ascii "O ID do fabricante eh 'xxxxxxxxxxxx'!\n"

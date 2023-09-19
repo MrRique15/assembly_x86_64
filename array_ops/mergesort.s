@@ -10,7 +10,7 @@
     conti: .int 0
     testTxt: .string "%d - %d"
     contj: .int 0
-    v1: .int 0, 8, 3, 6, 2, 4, 7, 5, 1, 9
+    v1: .int 0, 8, 3, 6, 2, 4, 7, 5
     v1Aux: .int 0, 0, 0, 0, 0, 0, 0, 0
     vecTam: .int 8
     meio: .long 0
@@ -28,13 +28,13 @@ _start:
     call printf
     addl $4, %esp
 
-    pushl $10
+    pushl vecTam
     pushl $v1
     call printVec
     addl $8, %esp
 
     pushl $v1Aux # vetAux
-    pushl $10 # tamanho
+    pushl vecTam # tamanho
     pushl $0 # meio
     pushl $v1 # vet
     call mergeSort
@@ -44,7 +44,7 @@ _start:
     call printf
     addl $4, %esp
 
-    pushl $10
+    pushl vecTam
     pushl $v1
     call printVec
     addl $8, %esp
@@ -119,11 +119,7 @@ exitPrintVecLoop:
     movl %ebp, %esp
     popl %ebp
     ret
-#pushl $v1Aux           24
-#pushl $8 # fim         20
-#pushl $0 # meio        16
-#pushl $0 # ini         12
-#pushl $v1              8
+
 merge:
     pushl %ebp
     movl %esp, %ebp
@@ -133,11 +129,6 @@ merge:
     movl %eax, dir
     jmp .mergeLoop
 
-#pushl $v1Aux           24
-#pushl $8 # fim         20
-#pushl $0 # meio        16
-#pushl $0 # ini         12
-#pushl $v1              8
 .mergeLoop:
     cmpl 20(%ebp), %ebx
     jge exitmergeLoop
@@ -194,10 +185,6 @@ exitmergeLoop:
     incl %ebx
     jmp .mergeLoop
 
-# v1Aux 20
-# v1    16
-# fim   12
-# i     8
 .copyVec:
     pushl %ebp
     movl %esp, %ebp
@@ -222,16 +209,7 @@ exitmergeLoop:
     movl %ebp, %esp
     popl %ebp
     ret
-
-# vetor[dir] 28
-# vetor[esq] 24
-# fim        20
-# dir        16
-# meio       12
-# esq        8
 .isLeftVec:
-    # ((esq < meio) && ((dir >= fim) || (vetor[esq] < vetor[dir])))
-
     pushl %ebp
     movl %esp, %ebp
     movl 24(%ebp), %eax
@@ -261,10 +239,6 @@ exitIsLeftVecFalse:
     popl %ebp
     ret
 
-#pushl $v1Aux           20
-#pushl $8 # tamanho     16
-#pushl $0 # inicio      12
-#pushl $v1              8
 mergeSort:
     pushl %ebp
     movl %esp, %ebp
@@ -305,21 +279,12 @@ mergeSort:
     pushl 8(%ebp)
     call merge
     addl $20, %esp
-    leave
-getMid:
-    pushl %ebp
-    movl %esp, %ebp
-    movl 8(%ebp), %eax
-    movl $2, %ebx
-    xor %edx, %edx
-    divl %ebx
+    
+    movl %ebp, %esp
     popl %ebp
     ret
 
 exitMerge:
-    nop
-
-exitGetMid:
     movl %ebp, %esp
     popl %ebp
     ret

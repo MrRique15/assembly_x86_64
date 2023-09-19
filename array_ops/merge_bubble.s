@@ -29,7 +29,9 @@
 
     # array allocated with 64 bytes (16 positions of 4 bytes each)
 	operatedArray: .int 4
-    v1Aux: .int 0, 0, 0, 0, 0, 0, 0, 0
+    v1Aux: .int 4
+
+    debugStr: .string "debug\n"
 	
 .section .text
 .global _start
@@ -38,9 +40,6 @@
 # auxiliary procedures
 # ###########################################################
 optionsMenuSelection:
-    pushl %ebp
-    movl %esp, %ebp
-
     pushl $optionsMenu
     call printf
     addl $4, %esp
@@ -54,14 +53,9 @@ optionsMenuSelection:
     call printf
     addl $4, %esp
 
-    movl %ebp, %esp
-    popl %ebp
     ret
 
 getLength:
-    pushl %ebp
-    movl %esp, %ebp
-
 	pushl $get_tam
 	call printf
     addl $4, %esp
@@ -82,14 +76,9 @@ getLength:
 	cmpl maxSize, %ecx
 	jg getLength
 
-    movl %ebp, %esp
-    popl %ebp
 	ret
 
 alocateArray:
-    pushl %ebp
-    movl %esp, %ebp
-
 	movl arrSize, %eax
 	movl $4, %ebx
 	mull %ebx
@@ -115,14 +104,9 @@ alocateArray:
         addl $4, %edi
     loop _fill_with_zeros_aux
 
-    movl %ebp, %esp
-    popl %ebp
 	ret
 
 show_sorted_array:
-    pushl %ebp
-    movl %esp, %ebp
-
 	pushl $showSortedArr
 	call printf
 
@@ -150,14 +134,9 @@ show_sorted_array:
 	call printf
 	addl $4, %esp
 
-    movl %ebp, %esp
-    popl %ebp
     ret
 
 show_collected_array:
-    pushl %ebp
-    movl %esp, %ebp
-
 	pushl $showOriginalArr
 	call printf
 	addl $4, %esp
@@ -185,14 +164,9 @@ show_collected_array:
     call printf
     addl $4, %esp
 
-    movl %ebp, %esp
-    popl %ebp
     ret
 
 start_program:
-    pushl %ebp
-    movl %esp, %ebp
-
     movl arrSize, %ecx
     movl %ecx, auxSize
     movl $operatedArray,%edi
@@ -227,8 +201,6 @@ start_program:
 	    addl $4, %edi
 	loop _collect_numbers      # loop until ecx == 0
     
-    movl %ebp, %esp
-    popl %ebp
     ret
 # ###########################################################
 # merge sort algorithm 
@@ -240,9 +212,9 @@ merge:
     movl 16(%ebp), %eax
     movl %ebx, esq
     movl %eax, dir
-    jmp .mergeLoop
+    jmp _merge_sort_loop
 
-.mergeLoop:
+_merge_sort_loop:
     cmpl 20(%ebp), %ebx
     jge exitmergeLoop
 
@@ -264,11 +236,11 @@ merge:
     pushl dir
     pushl 16(%ebp)
     pushl esq
-    call .isLeftVec
+    call _leftVect
     addl $24, %esp
 
     cmpl $1, %eax
-    je .leftVec
+    je _leftVec
 
     movl %ebx, %ecx
     imul $4, %ecx
@@ -277,22 +249,21 @@ merge:
     movl %edx, (%eax)
     incl dir
     incl %ebx
-    jmp .mergeLoop
-
+    jmp _merge_sort_loop
 
 exitmergeLoop:
     pushl $v1Aux
     pushl $operatedArray
     pushl 20(%ebp)
     pushl 12(%ebp)
-    call .copyVec
+    call _arrayCopy
     addl $16, %esp
 
     movl %ebp, %esp
     popl %ebp
     ret
 
-.leftVec:
+_leftVec:
     movl %ebx, %edx
     imul $4, %edx
     movl 24(%ebp), %eax #v1aux
@@ -300,17 +271,30 @@ exitmergeLoop:
     movl %ecx, (%eax)
     incl esq
     incl %ebx
-    jmp .mergeLoop
+    jmp _merge_sort_loop
 
-.copyVec:
+_arrayCopy:
     pushl %ebp
     movl %esp, %ebp
     movl 8(%ebp), %ebx
-    jmp .copyVecLoop
+    jmp _arrayCopyLoop
 
-.copyVecLoop:
+_f1Flag:
+    pushl $debugStr
+    call printf
+    addl $4, %esp
+
+    call bubble_sort_array
+
+    pushl $debugStr
+    call printf
+    addl $4, %esp
+
+    jmp _finishSorting
+
+_arrayCopyLoop:
     cmpl 12(%ebp), %ebx
-    je .exitCopyVecLoop
+    je _finishCopyingArray
     
     movl %ebx, %eax
     imul $4, %eax
@@ -321,13 +305,14 @@ exitmergeLoop:
     movl (%ecx), %ecx
     movl %ecx, (%edx)
     incl %ebx
-    jmp .copyVecLoop
+    jmp _arrayCopyLoop
 
-.exitCopyVecLoop:
+_finishCopyingArray:
     movl %ebp, %esp
     popl %ebp
     ret
-.isLeftVec:
+
+_leftVect:
     pushl %ebp
     movl %esp, %ebp
     movl 24(%ebp), %eax
@@ -336,28 +321,28 @@ exitmergeLoop:
 
     movl 16(%ebp), %eax
     cmpl 20(%ebp), %eax
-    jl exitIsLeftVecFalse
+    jl falseFlag
 
     vet_esq_smaller_than_vet_dir:
     movl 8(%ebp), %eax
     cmpl 12(%ebp), %eax
-    jge exitIsLeftVecFalse
+    jge falseFlag
 
-    jmp exitIsLeftVecTrue
+    jmp trueFlag
 
-exitIsLeftVecTrue:
+trueFlag:
     movl $1, %eax
     movl %ebp, %esp
     popl %ebp
     ret
 
-exitIsLeftVecFalse:
+falseFlag:
     movl $0, %eax
     movl %ebp, %esp
     popl %ebp
     ret
 
-mergeSort:
+merge_sort:
     pushl %ebp
     movl %esp, %ebp
     subl $20, %esp
@@ -365,7 +350,7 @@ mergeSort:
     movl 12(%ebp), %ebx # inicio
     subl %ebx, %eax
     cmpl $2, %eax
-    jl exitMerge
+    jl finishSorting
 
     movl 16(%ebp), %eax
     movl 12(%ebp), %ebx
@@ -380,7 +365,7 @@ mergeSort:
     pushl -12(%ebp)
     pushl 12(%ebp)
     pushl 8(%ebp)
-    call mergeSort
+    call merge_sort
     addl $16, %esp
 
     subl $16, %esp
@@ -388,7 +373,7 @@ mergeSort:
     pushl 16(%ebp)
     pushl -12(%ebp)
     pushl 8(%ebp)
-    call mergeSort
+    call merge_sort
     addl $16, %esp
 
     pushl $v1Aux
@@ -403,7 +388,7 @@ mergeSort:
     popl %ebp
     ret
 
-exitMerge:
+finishSorting:
     movl %ebp, %esp
     popl %ebp
     ret
@@ -411,9 +396,6 @@ exitMerge:
 # bubble sort algorithm 
 # ###########################################################
 bubble_sort_array:
-    pushl %ebp
-    movl %esp, %ebp
-
 	movl $operatedArray, %edi  # %edi receives the address of the first array element
 	movl %edi, %esi            # %esi receives the address of the first array element
 
@@ -455,8 +437,6 @@ swap_values:
 	jmp continue_execution
 
 finish_bubble_sort:
-    movl %ebp, %esp
-    popl %ebp
     ret
 
 # ###########################################################
@@ -518,19 +498,17 @@ mergeSortOption:
     movl arrSize, %eax
     cmpl $0, %eax
     je anyArrayInsertedError
-
-    movl $0, %eax
-    movl $0, %ebx
-    movl $0, %ecx
-    movl $0, %edx
     
+    jmp _f1Flag
+    jmp _finishSorting
     pushl $v1Aux         # auxiliar array
     pushl arrSize        # array size
     pushl $0             # mid value
     pushl $operatedArray # operated array to be sorted
-    call mergeSort
+    call merge_sort
     addl $16, %esp
 
+    _finishSorting:
     call show_sorted_array
     jmp back_from_choice
 
@@ -572,15 +550,10 @@ anyArrayInsertedError:
     jmp back_from_choice
 
 clearScreenFunction:
-    pushl %ebp
-    movl %esp, %ebp
-
     pushl $clearScreenStr
     call printf
     addl $4, %esp
 
-    movl %ebp, %esp
-    popl %ebp
     ret
 
 finish_program:

@@ -519,6 +519,11 @@ mergeSortOption:
     cmpl $0, %eax
     je anyArrayInsertedError
 
+    movl $0, %eax
+    movl $0, %ebx
+    movl $0, %ecx
+    movl $0, %edx
+    
     pushl $v1Aux         # auxiliar array
     pushl arrSize        # array size
     pushl $0             # mid value

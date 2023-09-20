@@ -15,6 +15,8 @@
     esq: .int 0
     dir: .int 0
     vecTam: .int 8
+
+    # arrays
     v1: .space 32
     v1Aux: .space 32
 .section .text

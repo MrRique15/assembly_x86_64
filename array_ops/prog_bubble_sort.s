@@ -1,5 +1,4 @@
 .section .data
-    
     # string variables
 	skipLine: .asciz "\n"
     intFormat: .asciz "%d"
@@ -15,7 +14,6 @@
     arrayNotAlocated: .asciz "Array not alocated! Define the length before inserting elements!\n\n"
     optionsMenu: .string "\n\n\t\tSelect an Option:\n[1]Define Array Size\n[2]Insert Array Elements\n[3]Show Array\n[4]BubbleSort\n[5]Reset Values\n[6]Exit\n\nOption: "
     
-
     # integer variables
     esq: .int 0
     dir: .int 0
@@ -32,7 +30,6 @@
     v1Aux: .int 4
 
     debugStr: .string "debug\n"
-	
 .section .text
 .global _start
 

@@ -2,8 +2,8 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = array_ops/merge_bubble
-OUTPUT_NAME = merge_bubble
+PROG_PATH = array_ops/prog_merge_sort
+OUTPUT_NAME = prog_merge_sort
 
 all:
 	as -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o 

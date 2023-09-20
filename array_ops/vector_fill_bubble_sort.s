@@ -178,3 +178,7 @@ _start:
 finish_program:
     pushl $0
 	call exit
+
+aoidgasdfaksy
+aksfkasfdyaysk
+akusdfkaf

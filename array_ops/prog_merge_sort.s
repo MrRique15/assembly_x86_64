@@ -10,7 +10,7 @@
     vetorTxtFinal: .asciz "\nSorted Array  : "
     collectStr: .string "Insert the [%d] element: "
     allocString: .string "Insert the array length: "
-    
+
     # integer variables
     esq: .int 0
     dir: .int 0
@@ -150,13 +150,13 @@ merge:
         imul $4, %ecx
         movl 8(%ebp), %eax
         addl %ecx, %eax
-        movl (%eax), %ecx # vetor[esq]
+        movl (%eax), %ecx
 
         movl dir, %edx
         imul $4, %edx
         movl 8(%ebp), %eax
         addl %edx, %eax
-        movl (%eax), %edx # vetor[dir]
+        movl (%eax), %edx
 
         pushl %edx
         pushl %ecx
@@ -212,8 +212,8 @@ _arrayCopy:
 
         movl %ebx, %eax
         imul $4, %eax
-        movl 20(%ebp), %ecx # v1Aux
-        movl 16(%ebp), %edx # v1
+        movl 20(%ebp), %ecx
+        movl 16(%ebp), %edx
         addl %eax, %ecx
         addl %eax, %edx
         movl (%ecx), %ecx
@@ -257,8 +257,8 @@ merge_sort:
     pushl %ebp
     movl %esp, %ebp
     subl $20, %esp
-    movl 16(%ebp), %eax # tamanho
-    movl 12(%ebp), %ebx # inicio
+    movl 16(%ebp), %eax
+    movl 12(%ebp), %ebx
     subl %ebx, %eax
     cmpl $2, %eax
     jl finishSorting

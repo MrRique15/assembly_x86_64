@@ -9,15 +9,18 @@
 .global _start
 
 _start:
-    jmp read_float
+    call read_float
 
     continue_1:
-    jmp print_float
+    call print_float
 
     finish:
     jmp exit_program
 
 read_float:
+    pushl %ebp
+    movl %esp, %ebp
+
     pushl $promptText
     call printf
     addl $4, %esp
@@ -29,15 +32,26 @@ read_float:
 
     fldl (inputNumber)
 
-    jmp continue_1 
+    movl %ebp, %esp
+    popl %ebp
+    ret
 
 print_float:
+    pushl %ebp
+    movl %esp, %ebp
+
+    pushl %esp
+
     fstl (%esp)
     pushl $outputString
     call printf
     addl $8, %esp
 
-    jmp finish 
+    popl %esp
+    
+    movl %ebp, %esp
+    popl %ebp
+    ret
 
 exit_program:
     pushl $0

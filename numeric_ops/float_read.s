@@ -31,25 +31,21 @@ read_float:
 
     fldl (inputNumber)
 
-    movl %ebp, %esp
-    popl %ebp
+    leave
     ret
 
 print_float:
     pushl %ebp
     movl %esp, %ebp
 
-    pushl %esp
+    subl $8, %esp   # Allocate space for the float number on the stack
 
-    fstl (%esp)
+    fstpl (%esp)
     pushl $outputString
     call printf
-    addl $8, %esp
-
-    popl %esp
+    addl $12, %esp
     
-    movl %ebp, %esp
-    popl %ebp
+    leave
     ret
 
 exit_program:

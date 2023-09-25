@@ -1,4 +1,3 @@
-
 .section .data
     promptText: .asciz "Enter a float number: "
     formatString: .asciz "%lf"  # Format specifier for scanning a double

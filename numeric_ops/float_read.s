@@ -10,10 +10,8 @@
 _start:
     call read_float
 
-    continue_1:
     call print_float
 
-    finish:
     jmp exit_program
 
 read_float:

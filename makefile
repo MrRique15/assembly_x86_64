@@ -2,8 +2,8 @@
 # gcc run -> 	./$(PROG).o
   
 # Add the program path here
-PROG_PATH = numeric_ops/float_sum
-OUTPUT_NAME = float_sum
+PROG_PATH = numeric_ops/float_calculator
+OUTPUT_NAME = float_calculator
 
 all:
 	as -32 $(PROG_PATH).s -o builds/$(OUTPUT_NAME).o 

@@ -3,50 +3,6 @@
     formato_int: .asciz "%d"
     formato_float: .asciz "%f"
     clearScreenStr: .string "\033[H\033[J"
-    mostra1: .asciz "\nSoma (N2 + N1) = %.4f\n"
-    
-    mostra2: .asciz "\nSubtracao (N2 - N1) = %.4f\n"
-    mostra3: .asciz "\nMultiplicacao (N2 * N1) = %.4f\n"
-    pedido1_loop: .asciz "\nDigite um valor (float) ou [0] para finalizar a operação\n===> "
-    pedido0: .asciz "\nDigite o um valor (float)\n===> "
-    pedido1: .asciz "\nDigite o primeiro valor (float)\n===> "
-    pedido2: .asciz "\nDigite o segundo  valor (float)\n===> "
-    
-    # menu strings
-    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[7] - ELEVAR AO QUADRADO\n\t[8] - DISTANCIA EUCLIDIANA\n\t[0] - SAIR DO PROGRAMA: \n===>"
-
-    # generic op strings
-    pedido_generic: .asciz "\DIGITE O PRIMEIRO VALOR DA OPERACAO (float) COM SINAL\n[+/-]X\n\n===>"
-    pedido_generic_loop: .asciz "\DIGITE UM VALOR (float) COM SINAL\n[0] PARA FINALIZAR A OPERACAO\n[+/-]X\n\n===>"
-    resultado_generic: .asciz "\nResultado = %.4f\n"
-
-    # sum strings
-    pedido_sum: .asciz "\nDIGITE O PRIMEIRO VALOR DA SOMA (float)\n\n===> "
-    pedido_sum_loop: .asciz "\nDIGITE UM VALOR (float) PARA SOMAR\n[0] PARA FINALIZAR A SOMA\n\n===> +"
-    resultado_sum: .asciz "\nResultado da SOMA = %.4f\n"
-
-    # sub strings
-    pedido_sub: .asciz "\DIGITE O VALOR INICIAL DA SUBTRACAO (float)\n\n===>"
-    pedido_sub_loop: .asciz "\DIGITE UM VALOR (float) PARA SUBTRAIR\n[0] PARA FINALIZAR A SUBTRACAO\n\n===> -"
-    resultado_sub: .asciz "\nResultado da SUBTRACAO = %.4f\n"
-
-    # div strings
-    pedido_div: .asciz "\nDIGITE OS VALORES DA DIVISÃO (x / y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x / y\n\n===>"
-    coleta_div: .asciz "%f / %f"
-    resultado_div: .asciz "\nResultado da DIVISAO = %.4f\n"
-
-    # Mul strings
-    pedido_mul: .asciz "\nDIGITE OS VALORES DA MULTIPLICACAO (x * y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x * y\n\n===>"
-    coleta_mul: .asciz "%f * %f"
-    resultado_mul: .asciz "\nResultado da MULTIPLICACAO = %.4f\n"
-
-    # sqrt strings
-    pedido_sqrt: .asciz "\nDIGITE UM VALOR PARA CALCULAR SUA RAIZ (float)\n\n===>"
-    resultado_sqrt: .asciz "\nResultado da RAIZ QUADRADA = %.4f\n"
-
-    # pow strings
-    pedido_pow: .asciz "\nDIGITE UM VALOR PARA CALCULAR SEU VALOR AO QUADRADO (float)\n\n===>"
-    resultado_pow: .asciz "\nResultado do QUADRADO = %.4f\n"
 
     # euclidian strings
     pedido_x1: .asciz "\nDIGITE O VALOR DE x1\n\n===>"
@@ -54,6 +10,42 @@
     pedido_y1: .asciz "\nDIGITE O VALOR DE y1\n\n===>"
     pedido_y2: .asciz "\nDIGITE O VALOR DE y2\n\n===>"
     resultado_euclidian: .asciz "\nDistancia EUCLIDIANA calculada = %.4f\n"
+
+    # sqrt strings
+    resultado_sqrt: .asciz "\nResultado da RAIZ QUADRADA = %.4f\n"
+    pedido_sqrt: .asciz "\nDIGITE UM VALOR PARA CALCULAR SUA RAIZ (float)\n\n===>"
+
+    # pow strings
+    resultado_pow: .asciz "\nResultado do QUADRADO = %.4f\n"
+    pedido_pow: .asciz "\nDIGITE UM VALOR PARA CALCULAR SEU VALOR AO QUADRADO (float)\n\n===>"
+
+    # sum strings
+    resultado_sum: .asciz "\nResultado da SOMA = %.4f\n"
+    pedido_sum: .asciz "\nDIGITE O PRIMEIRO VALOR DA SOMA (float)\n\n===> "
+    pedido_sum_loop: .asciz "\nDIGITE UM VALOR (float) PARA SOMAR\n[0] PARA FINALIZAR A SOMA\n\n===> +"
+
+    # sub strings
+    resultado_sub: .asciz "\nResultado da SUBTRACAO = %.4f\n"
+    pedido_sub: .asciz "\DIGITE O VALOR INICIAL DA SUBTRACAO (float)\n\n===>"
+    pedido_sub_loop: .asciz "\DIGITE UM VALOR (float) PARA SUBTRAIR\n[0] PARA FINALIZAR A SUBTRACAO\n\n===> -"
+
+    # generic op strings
+    resultado_generic: .asciz "\nResultado = %.4f\n"
+    pedido_generic: .asciz "\DIGITE O PRIMEIRO VALOR DA OPERACAO (float) COM SINAL\n[+/-]X\n\n===>"
+    pedido_generic_loop: .asciz "\DIGITE UM VALOR (float) COM SINAL\n[0] PARA FINALIZAR A OPERACAO\n[+/-]X\n\n===>"
+
+    # div strings
+    coleta_div: .asciz "%f / %f"
+    resultado_div: .asciz "\nResultado da DIVISAO = %.4f\n"
+    pedido_div: .asciz "\nDIGITE OS VALORES DA DIVISÃO (x / y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x / y\n\n===>"
+    
+    # Mul strings
+    coleta_mul: .asciz "%f * %f"
+    resultado_mul: .asciz "\nResultado da MULTIPLICACAO = %.4f\n"
+    pedido_mul: .asciz "\nDIGITE OS VALORES DA MULTIPLICACAO (x * y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x * y\n\n===>"
+
+    # menu strings
+    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[7] - ELEVAR AO QUADRADO\n\t[8] - DISTANCIA EUCLIDIANA\n\t[0] - SAIR DO PROGRAMA: \n===>"
 
     # Float variables
     float1: .space 4

@@ -13,7 +13,7 @@
     pedido2: .asciz "\nDigite o segundo  valor (float)\n===> "
     
     # menu strings
-    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[0] - SAIR DO PROGRAMA: \n===>"
+    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[0] - SAIR DO PROGRAMA: \n===>"
 
     # generic op strings
     pedido_generic: .asciz "\DIGITE O PRIMEIRO VALOR DA OPERACAO (float) COM SINAL\n[+/-]X\n\n===>"
@@ -31,14 +31,18 @@
     resultado_sub: .asciz "\nResultado da SUBTRACAO = %.4f\n"
 
     # div strings
-    pedido_div: .asciz "\nDIGITE OS VALORES DA DIVISÃO (x / y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x / y\n===>"
+    pedido_div: .asciz "\nDIGITE OS VALORES DA DIVISÃO (x / y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x / y\n\n===>"
     coleta_div: .asciz "%f / %f"
-    resultado_div: .asciz "\Resultado da DIVISAO = %.4f\n"
+    resultado_div: .asciz "\nResultado da DIVISAO = %.4f\n"
 
     # Mul strings
-    pedido_mul: .asciz "\nDIGITE OS VALORES DA MULTIPLICACAO (x * y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x * y\n===>"
+    pedido_mul: .asciz "\nDIGITE OS VALORES DA MULTIPLICACAO (x * y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x * y\n\n===>"
     coleta_mul: .asciz "%f * %f"
-    resultado_mul: .asciz "\Resultado da MULTIPLICACAO = %.4f\n"
+    resultado_mul: .asciz "\nResultado da MULTIPLICACAO = %.4f\n"
+
+    # sqrt strings
+    pedido_sqrt: .asciz "\nDIGITE UM VALOR PARA CALCULAR SUA RAIZ (float)\n\n===>"
+    resultado_sqrt: .asciz "\nResultado da RAIZ QUADRADA = %.4f\n"
 
     # Float variables
     float1: .space 4
@@ -70,6 +74,8 @@ _start:
         je mult_option_selected
         cmpl $5, %eax
         je div_option_selected
+        cmpl $6, %eax
+        je sqrt_option_selected
         cmpl $0, %eax
         je exit_program
 
@@ -98,6 +104,11 @@ mult_option_selected:
 div_option_selected:
     call div_floats
     jmp _loop_program
+
+sqrt_option_selected:
+    call sqrt_float
+    jmp _loop_program
+
 # ###########################################################
 read_number:
     pushl %ebp
@@ -191,11 +202,11 @@ generic_floats:
     jmp _generic_loop
 
     _exit_generic_loop:
-
     faddp
+
     subl $4, %esp
     fstl (%esp)
-    pushl $mostra1
+    pushl $resultado_generic
     call printf
     addl $8, %esp
 
@@ -229,11 +240,11 @@ add_floats:
     jmp _add_loop
 
     _exit_sum_loop:
-
     faddp
+
     subl $4, %esp
     fstl (%esp)
-    pushl $mostra1
+    pushl $resultado_sum
     call printf
     addl $8, %esp
 
@@ -267,11 +278,11 @@ sub_floats:
     jmp _sub_loop
 
     _exit_sub_loop:
-
     fsubp
+
     subl $4, %esp
     fstl (%esp)
-    pushl $mostra1
+    pushl $resultado_sub
     call printf
     addl $8, %esp
 
@@ -328,6 +339,27 @@ div_floats:
 
     fstl (%esp)
     pushl $resultado_div
+    call printf
+    addl $8, %esp
+
+    leave
+    ret
+
+sqrt_float:
+    pushl %ebp
+    movl %esp, %ebp
+
+    pushl $pedido_sqrt
+    call read_number
+    addl $4, %esp
+
+    flds float1
+    fsqrt
+
+    subl $4, %esp
+
+    fstl (%esp)
+    pushl $resultado_sqrt
     call printf
     addl $8, %esp
 

@@ -13,7 +13,7 @@
     pedido2: .asciz "\nDigite o segundo  valor (float)\n===> "
     
     # menu strings
-    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[0] - SAIR DO PROGRAMA: \n===>"
+    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[7] - ELEVAR AO QUADRADO\n\t[8] - DISTANCIA EUCLIDIANA\n\t[0] - SAIR DO PROGRAMA: \n===>"
 
     # generic op strings
     pedido_generic: .asciz "\DIGITE O PRIMEIRO VALOR DA OPERACAO (float) COM SINAL\n[+/-]X\n\n===>"
@@ -43,6 +43,17 @@
     # sqrt strings
     pedido_sqrt: .asciz "\nDIGITE UM VALOR PARA CALCULAR SUA RAIZ (float)\n\n===>"
     resultado_sqrt: .asciz "\nResultado da RAIZ QUADRADA = %.4f\n"
+
+    # pow strings
+    pedido_pow: .asciz "\nDIGITE UM VALOR PARA CALCULAR SEU VALOR AO QUADRADO (float)\n\n===>"
+    resultado_pow: .asciz "\nResultado do QUADRADO = %.4f\n"
+
+    # euclidian strings
+    pedido_x1: .asciz "\nDIGITE O VALOR DE x1\n\n===>"
+    pedido_x2: .asciz "\nDIGITE O VALOR DE x2\n\n===>"
+    pedido_y1: .asciz "\nDIGITE O VALOR DE y1\n\n===>"
+    pedido_y2: .asciz "\nDIGITE O VALOR DE y2\n\n===>"
+    resultado_euclidian: .asciz "\nDistancia EUCLIDIANA calculada = %.4f\n"
 
     # Float variables
     float1: .space 4
@@ -76,6 +87,10 @@ _start:
         je div_option_selected
         cmpl $6, %eax
         je sqrt_option_selected
+        cmpl $7, %eax
+        je pow_option_selected
+        cmpl $8, %eax
+        je euclidian_option_selected
         cmpl $0, %eax
         je exit_program
 
@@ -109,6 +124,13 @@ sqrt_option_selected:
     call sqrt_float
     jmp _loop_program
 
+pow_option_selected:
+    call pow_float
+    jmp _loop_program
+
+euclidian_option_selected:
+    call euclidian_distance
+    jmp _loop_program
 # ###########################################################
 read_number:
     pushl %ebp
@@ -357,9 +379,71 @@ sqrt_float:
     fsqrt
 
     subl $4, %esp
-
     fstl (%esp)
     pushl $resultado_sqrt
+    call printf
+    addl $8, %esp
+
+    leave
+    ret
+
+pow_float:
+    pushl %ebp
+    movl %esp, %ebp
+
+    pushl $pedido_pow
+    call read_number
+    addl $4, %esp
+
+    flds float1
+    flds float1
+    fmulp
+
+    subl $4, %esp
+    fstl (%esp)
+    pushl $resultado_pow
+    call printf
+    addl $8, %esp
+
+    leave
+    ret
+
+euclidian_distance:
+    pushl %ebp
+    movl %esp, %ebp
+
+    pushl $pedido_x1
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    pushl $pedido_x2
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    fsubp
+    fmul %st(0), %st(0)
+
+    pushl $pedido_y1
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    pushl $pedido_y2
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    fsubp
+    fmul %st(0), %st(0)
+
+    faddp
+    fsqrt
+
+    subl $4, %esp
+    fstl (%esp)
+    pushl $resultado_euclidian
     call printf
     addl $8, %esp
 

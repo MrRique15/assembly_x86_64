@@ -4,6 +4,11 @@
     formato_float: .asciz "%f"
     clearScreenStr: .string "\033[H\033[J"
 
+    # triangle area
+    pedido_base: .asciz "\nDIGITE O VALOR DA BASE\n\n===>"
+    pedido_altura: .asciz "\nDIGITE O VALOR DA ALTURA\n\n===>"
+    resultado_triangulo: .asciz "\nArea do Triangulo = %.4f\n"
+
     # euclidian strings
     pedido_x1: .asciz "\nDIGITE O VALOR DE x1\n\n===>"
     pedido_x2: .asciz "\nDIGITE O VALOR DE x2\n\n===>"
@@ -45,13 +50,15 @@
     pedido_mul: .asciz "\nDIGITE OS VALORES DA MULTIPLICACAO (x * y) (floats)\nINSIRA EXATAMENTE NO FORMATO ->  x * y\n\n===>"
 
     # menu strings
-    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t[6] - RAIZ QUADRADA\n\t[7] - ELEVAR AO QUADRADO\n\t[8] - DISTANCIA EUCLIDIANA\n\t[0] - SAIR DO PROGRAMA: \n===>"
+    options_string: .asciz "\t\t\nMenu de Opções: \n\t[1] - GENERICA (soma/sub)\n\t[2] - SOMA\n\t[3] - SUBTRACAO\n\t[4] - MULTIPLICACAO\n\t[5] - DIVISAO\n\t"
+    options_string_two: .asciz "[6] - RAIZ QUADRADA\n\t[7] - ELEVAR AO QUADRADO\n\t[8] - DISTANCIA EUCLIDIANA\n\t[9] - AREA DO TRIANGULO\n\t[0] - SAIR DO PROGRAMA: \n===>"
 
     # Float variables
     float1: .space 4
     float2: .space 4
 
     # Integer variables
+    two_number: .int 2
     zero_number: .int 0
     option_selected: .int 0
 .section .text
@@ -83,6 +90,8 @@ _start:
         je pow_option_selected
         cmpl $8, %eax
         je euclidian_option_selected
+        cmpl $9, %eax
+        je triangle_area_selected
         cmpl $0, %eax
         je exit_program
 
@@ -123,6 +132,11 @@ pow_option_selected:
 euclidian_option_selected:
     call euclidian_distance
     jmp _loop_program
+
+triangle_area_selected:
+    call triangle_area
+    jmp _loop_program
+
 # ###########################################################
 read_number:
     pushl %ebp
@@ -141,35 +155,6 @@ read_number:
 
     leave
     ret
-
-# read_two_numbers:
-#     pushl %ebp
-#     movl %esp, %ebp
-# 
-#     movl 8(%ebp), %edi
-# 
-#     pushl %edi
-#     call printf
-#     addl $4, %esp
-# 
-#     pushl $float1
-#     pushl $formato_float
-#     call scanf
-#     addl $8, %esp
-# 
-#     movl 12(%ebp), %edi
-# 
-#     pushl %edi
-#     call printf
-#     addl $4, %esp
-# 
-#     pushl $float2
-#     pushl $formato_float
-#     call scanf
-#     addl $8, %esp
-# 
-#     leave
-#     ret
 
 read_number_looping:
     pushl %ebp
@@ -442,11 +427,44 @@ euclidian_distance:
     leave
     ret
 
+triangle_area:
+    pushl %ebp
+    movl %esp, %ebp
+
+    pushl $pedido_base
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    pushl $pedido_altura
+    call read_number
+    addl $4, %esp
+    flds float1
+
+    fmulp
+    
+    filds two_number
+    fxch %st(1)
+    fdivp 
+
+    subl $4, %esp
+    fstl (%esp)
+    pushl $resultado_triangulo
+    call printf
+    addl $8, %esp
+
+    leave
+    ret
+
 options_menu:
     pushl %ebp
     movl %esp, %ebp
 
     pushl $options_string
+    call printf
+    addl $4, %esp
+
+    pushl $options_string_two
     call printf
     addl $4, %esp
 

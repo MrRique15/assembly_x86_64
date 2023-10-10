@@ -65,6 +65,7 @@
 
 .global _start
 # ###########################################################
+# ###########################################################
 _start:
     _loop_program:
 
@@ -96,6 +97,11 @@ _start:
         je exit_program
 
     jmp _loop_program
+
+    pushl $0
+    call exit
+
+# ###########################################################
 # ###########################################################
 exit_program:
     pushl $0
@@ -136,7 +142,7 @@ euclidian_option_selected:
 triangle_area_selected:
     call triangle_area
     jmp _loop_program
-
+# ###########################################################
 # ###########################################################
 read_number:
     pushl %ebp
@@ -173,6 +179,8 @@ read_number_looping:
 
     leave
     ret
+    
+# ###########################################################
 # ###########################################################
 generic_floats:
     pushl %ebp
@@ -211,7 +219,7 @@ generic_floats:
 
     leave 
     ret
-
+# ###########################################################
 add_floats:
     pushl %ebp
     movl %esp, %ebp
@@ -249,7 +257,7 @@ add_floats:
 
     leave 
     ret
-
+# ###########################################################
 sub_floats:
     pushl %ebp
     movl %esp, %ebp
@@ -287,7 +295,7 @@ sub_floats:
 
     leave 
     ret
-
+# ###########################################################
 mult_floats:
     pushl %ebp
     movl %esp, %ebp
@@ -315,7 +323,7 @@ mult_floats:
     
     leave
     ret
-
+# ###########################################################
 div_floats:
     pushl %ebp
     movl %esp, %ebp
@@ -343,7 +351,7 @@ div_floats:
 
     leave
     ret
-
+# ###########################################################
 sqrt_float:
     pushl %ebp
     movl %esp, %ebp
@@ -363,7 +371,7 @@ sqrt_float:
 
     leave
     ret
-
+# ###########################################################
 pow_float:
     pushl %ebp
     movl %esp, %ebp
@@ -384,7 +392,7 @@ pow_float:
 
     leave
     ret
-
+# ###########################################################
 euclidian_distance:
     pushl %ebp
     movl %esp, %ebp
@@ -426,7 +434,7 @@ euclidian_distance:
 
     leave
     ret
-
+# ###########################################################
 triangle_area:
     pushl %ebp
     movl %esp, %ebp
@@ -455,7 +463,8 @@ triangle_area:
 
     leave
     ret
-
+# ###########################################################
+# ###########################################################
 options_menu:
     pushl %ebp
     movl %esp, %ebp
@@ -479,3 +488,4 @@ options_menu:
     
     leave
     ret
+# ###########################################################
